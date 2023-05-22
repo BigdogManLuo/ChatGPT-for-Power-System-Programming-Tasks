@@ -7,7 +7,6 @@
 This repository contains the code implementation for "ChatGPT for Power System Programming Tasks". We aim to provide an innovative solution for power system programming tasks using the state-of-the-art language model, GPT-4, developed by OpenAI.By harnessing the capabilities of ChatGPT, power engineers can streamline their coding tasks, enhance productivity, and unlock new possibilities in power system programming.
 
 ## Abstract📰
----
 The rapid digitalization of power systems has resulted in a significant surge in coding tasks for power engineers. This repository explores the utilization of ChatGPT, an advanced AI language model, to assist power engineers and researchers in various coding tasks. By leveraging the capabilities of ChatGPT, we demonstrate its efficacy through three case studies that span different coding scenarios.
 
 **Case Study 1️⃣: Daily Unit Commitment**
@@ -22,7 +21,6 @@ When faced with new problems that lack readily available solutions, ChatGPT shin
 This work corresponds to our paper [Leveraging ChatGPT for Power System Optimization A Novel Approach for Programming Tasks](https://arxiv.org/abs/2305.11202), where we elaborate on our methodology, implementation details, and experimental results.
 
 ## Reference
----
 If you find this work useful and use it in your research, please consider citing our paper:
 
 ```bibtex
@@ -37,7 +35,7 @@ If you find this work useful and use it in your research, please consider citing
 ```
 
 ## Getting Started💾
----
+
 ### Prerequisites
 - ✅Python 3.7+ <br>
 - ✅PyTorch 1.8.0+ <br>
