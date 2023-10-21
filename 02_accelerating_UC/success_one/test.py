@@ -84,21 +84,7 @@ with torch.no_grad():
         # recover outputs to shape (N,T)
         outputs=outputs.reshape(24,10)
         outputs=outputs.T
-        if ins_index<=5:
-        # Fix U and optimized the modified model 
-            status,obj,consum_time=OptimizeRemainedLP(ins_index,outputs)
-        elif ins_index<=93:
-            sol=sol.numpy()
-            status,obj,consum_time=OptimizeRemainedLP(ins_index,sol.reshape(24,10).T)
-        else:
-            #Randomly select certain elements in the sol and invert them
-            sol=sol.numpy()
-            sol=sol.reshape(24,10)
-            sol=sol.T
-            sol[2][3]=1-sol[2][3]
-            status,obj,consum_time=OptimizeRemainedLP(ins_index,sol)
-            
-        
+        status,obj,consum_time=OptimizeRemainedLP(ins_index,outputs)
         #Update ins_index
         ins_index=ins_index+1
         
