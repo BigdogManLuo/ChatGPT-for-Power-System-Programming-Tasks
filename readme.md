@@ -15,14 +15,10 @@ see '01_normal_UC'
 see '02_accelerating_UC'
 
 
-
-
 This work corresponds to our paper [A framework for leveraging ChatGPT on programming tasks in energy systems
 ](https://arxiv.org/abs/2305.11202), where we elaborate on our methodology, implementation details, and experimental results.
 
 ## Reference
-If you find this work useful and use it in your research, please consider citing our paper:
-
 ```bibtex
 @misc{li2023leveraging,
       title={A framework for leveraging ChatGPT on programming tasks in energy systems}, 
@@ -33,44 +29,6 @@ If you find this work useful and use it in your research, please consider citing
       primaryClass={cs.HC}
 }
 ```
-
-## Getting Started💾
-
-### Prerequisites
-- ✅Python 3.7+ <br>
-- ✅PyTorch 1.8.0+ <br>
-
-### Installation
-
-Clone this repository and install the requirements:
-```bash
-git clone https://github.com/yourusername/ChatGPT-for-Power-System-Programming-Tasks.git
-cd ChatGPT-for-Power-System-Programming-Tasks
-pip install -r requirements.txt
-```
-
-### Comprehensive Evaluation of Normal UC
-take GPT4.0 as an example:
-```shell
-cd 01_normal_UC
-python GPT4.0/x.x.py
-...
-```
-
-### Accelerating UC
-take 'success one' as an example, others are same.
-```shell
-cd success one
-python generate_uc_instances.py
-python main.py
-```
-
-
-**Notice📌**
-
-
-## License
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 
 ## Acknowledgements
