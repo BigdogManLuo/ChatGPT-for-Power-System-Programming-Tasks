@@ -1,2 +1,4 @@
+.gitignore
 02_accelerating_UC/success_one/data
 !02_accelerating_UC/success_one/data/.gitkeep
+02_accelerating_UC/success_one/generate_uc_instances.py
