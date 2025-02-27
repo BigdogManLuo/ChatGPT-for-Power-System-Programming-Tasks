@@ -50,7 +50,7 @@ def solve_mip(lp_file, N):
   
     # Set the number of solutions to store in the solution pool
     model.setParam(GRB.Param.PoolSolutions, N)
-    
+    model.setParam("MIPGap",1e-3)
     # Optimize the model
     model.optimize()
 
@@ -62,7 +62,24 @@ def solve_mip(lp_file, N):
         obj=model.objVal
 
     return sol, obj
+        
+def generateSols(filePath,outdir,startIdx,endIdx):
 
+    import pandas as pd
+    trainFile = os.listdir(filePath)
+    if not (os.path.exists(outdir)):
+        os.mkdir(outdir)
+    
+    df=pd.DataFrame(columns=['instance','obj'])
+    for i in range(240):
+        df['sol'+str(i)]=-1
+
+    for i in range(startIdx,endIdx):
+        
+        sol,obj=solve_mip(filePath+trainFile[i],10)
+        df.loc[i]=[trainFile[i],obj]+sol
+
+    return df
 
 def makeDataset(filePath,outdir,startIdx,endIdx):
 
@@ -77,7 +94,7 @@ def makeDataset(filePath,outdir,startIdx,endIdx):
         
         adj,feature=mip_to_bipartite(filePath+trainFile[i])
         sol,obj=solve_mip(filePath+trainFile[i],10)
-
+        
         #Convert to dense matrix
         adj=adj.toarray()
         adj=adj.astype(np.uint8)
@@ -108,15 +125,17 @@ def makeDataset(filePath,outdir,startIdx,endIdx):
     sols=torch.stack(sols)
     objs=torch.stack(objs)
     
-    #Save
+    #Save to file
+    
     pickle.dump(adjs,open(outdir+'adjs.pkl','wb'))
     pickle.dump(features,open(outdir+'features.pkl','wb'))
     pickle.dump(sols,open(outdir+'sols.pkl','wb'))
     pickle.dump(objs,open(outdir+'objs.pkl','wb'))
-
+    
 
 
 if __name__ == "__main__":
+
     filePath_train="data/instances/uc/train/"
     filePath_test="data/instances/uc/test/"
     outdir1="data/samples/uc/train1/"
@@ -125,6 +144,10 @@ if __name__ == "__main__":
     outdir4="data/samples/uc/train4/"
     outdir_valid="data/samples/uc/valid/"
     outdir_test="data/samples/uc/test/"
+    
+    #makeDataset(filePath_train,outdir1,0,100)
+    #df=generateSols(filePath_train,outdir1,0,200)
+    
     
     #Train_set
     process1=multiprocessing.Process(target=makeDataset,args=(filePath_train,outdir1,0,100))
@@ -144,8 +167,8 @@ if __name__ == "__main__":
     process2.start()
     process3.start()
     process4.start()
+    process_test.start()
     process_valid.start()
-    process_test.start()   
     
     
-    
+ 

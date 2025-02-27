@@ -4,19 +4,21 @@ import pickle
 
 
 def generate_train_instance(train_size):
+    
     cost_coffe=[]
 
     for k in range(train_size):
     
         #Add random number
-        C = [num + np.random.randint(0,2) for num in C_base]
-        S = [num + np.random.randint(0,2) for num in S_base]
-        D = [num + np.random.randint(0,2) for num in D_base]
+        C = [num + np.random.randint(0,1.5) for num in C_base]
+        S = [num + np.random.randint(0,1.5) for num in S_base]
+        D = [num + np.random.randint(0,1.5) for num in D_base]
         P_min = [num + np.random.randint(0,2) for num in P_min_base]
         P_max = [num + np.random.randint(0,5) for num in P_max_base]
         RU = [num + np.random.randint(0,2) for num in RU_base]
         RD = [num + np.random.randint(0,2) for num in RD_base]
-        demand=[num + np.random.randint(-50,50) for num in demand_base]
+        demand=[num + np.random.randint(-125,125) for num in demand_base]
+        RES=[num + np.random.randint(-50,50) for num in RES_base]
         
         # Create a new model
         m = Model("UC")
@@ -26,16 +28,19 @@ def generate_train_instance(train_size):
         U = [[m.addVar(vtype=GRB.BINARY, name="U_{}_{}".format(i, t)) for t in range(T)] for i in range(N)]  # Unit status
         V = [[m.addVar(vtype=GRB.BINARY, name="V_{}_{}".format(i, t)) for t in range(T)] for i in range(N)]  # Start-up status
         W = [[m.addVar(vtype=GRB.BINARY, name="W_{}_{}".format(i, t)) for t in range(T)] for i in range(N)]  # Shutdown status
-        
+        P_RES=[m.addVar(lb=0,name="RES_{}".format(t),ub=RES[t]) for t in range(T)]
+
         # Set objective
         m.setObjective(sum(C[i]*P[i][t] + S[i]*V[i][t] + D[i]*W[i][t] for i in range(N) for t in range(T)), GRB.MINIMIZE)
         
         # Add constraints
         for t in range(T):
+
             # Power balance constraint
-            m.addConstr(sum(P[i][t] for i in range(N)) == demand[t], "PowerBalance_{}".format(t))
+            m.addConstr(sum(P[i][t] for i in range(N))+P_RES[t] == demand[t], "PowerBalance_{}".format(t))
             
             for i in range(N):
+
                 # Unit status constraint
                 m.addConstr(P_min[i]*U[i][t] <= P[i][t], "MinPower_{}_{}".format(i, t))
                 m.addConstr(P[i][t] <= P_max[i]*U[i][t], "MaxPower_{}_{}".format(i, t))
@@ -53,13 +58,13 @@ def generate_train_instance(train_size):
                     m.addConstr(P[i][t-1] - P[i][t] <= RD[i], "RampDown_{}_{}".format(i, t))
         
         # Add minimum up/down time constraints
-        '''
+        
         for i in range(N):
             for t in range(U_min[i], T):
                 m.addConstr(sum(V[i][t-j] for j in range(U_min[i])) <= 1, "MinUp_{}_{}".format(i, t))
             for t in range(U_max[i], T):
                 m.addConstr(sum(W[i][t-j] for j in range(U_max[i])) <= 1, "MinDown_{}_{}".format(i, t))
-        '''
+        
         
         cost_coffe.append(C)
         # Write LP file
@@ -83,14 +88,15 @@ def generate_test_instance(test_size):
     
     
         #Add random number
-        C = [num + np.random.randint(0,2) for num in C_base]
-        S = [num + np.random.randint(0,2) for num in S_base]
-        D = [num + np.random.randint(0,2) for num in D_base]
+        C = [num + np.random.randint(0,1.5) for num in C_base]
+        S = [num + np.random.randint(0,1.5) for num in S_base]
+        D = [num + np.random.randint(0,1.5) for num in D_base]
         P_min = [num + np.random.randint(0,2) for num in P_min_base]
         P_max = [num + np.random.randint(0,5) for num in P_max_base]
         RU = [num + np.random.randint(0,2) for num in RU_base]
         RD = [num + np.random.randint(0,2) for num in RD_base]
-        demand=[num + np.random.randint(-50,50) for num in demand_base]
+        demand=[num + np.random.randint(-125,125) for num in demand_base]
+        RES=[num + np.random.randint(-50,50) for num in RES_base]
         
         # Create a new model
         m = Model("UC")
@@ -100,14 +106,16 @@ def generate_test_instance(test_size):
         U = [[m.addVar(vtype=GRB.BINARY, name="U_{}_{}".format(i, t)) for t in range(T)] for i in range(N)]  # Unit status
         V = [[m.addVar(vtype=GRB.BINARY, name="V_{}_{}".format(i, t)) for t in range(T)] for i in range(N)]  # Start-up status
         W = [[m.addVar(vtype=GRB.BINARY, name="W_{}_{}".format(i, t)) for t in range(T)] for i in range(N)]  # Shutdown status
-        
+        P_RES=[m.addVar(lb=0,name="RES_{}".format(t),ub=RES[t]) for t in range(T)]
+
+
         # Set objective
         m.setObjective(sum(C[i]*P[i][t] + S[i]*V[i][t] + D[i]*W[i][t] for i in range(N) for t in range(T)), GRB.MINIMIZE)
         
         # Add constraints
         for t in range(T):
             # Power balance constraint
-            m.addConstr(sum(P[i][t] for i in range(N)) == demand[t], "PowerBalance_{}".format(t))
+            m.addConstr(sum(P[i][t] for i in range(N))+P_RES[t] == demand[t], "PowerBalance_{}".format(t))
             
             for i in range(N):
                 # Unit status constraint
@@ -127,16 +135,15 @@ def generate_test_instance(test_size):
                     m.addConstr(P[i][t-1] - P[i][t] <= RD[i], "RampDown_{}_{}".format(i, t))
         
         # Add minimum up/down time constraints
-        '''
+        
         for i in range(N):
             for t in range(U_min[i], T):
                 m.addConstr(sum(V[i][t-j] for j in range(U_min[i])) <= 1, "MinUp_{}_{}".format(i, t))
             for t in range(U_max[i], T):
                 m.addConstr(sum(W[i][t-j] for j in range(U_max[i])) <= 1, "MinDown_{}_{}".format(i, t))
-        '''
+        
         
         m.optimize()
-        
         
         Objs.append(m.getObjective().getValue())
         cost_coffe.append(C)
@@ -156,6 +163,7 @@ def generate_test_instance(test_size):
         pickle.dump(cost_coffe,f)
 
 if __name__ == "__main__":
+
     # Define the parameters
     T = 24  # total periods
     N = 10  # number of units
@@ -176,8 +184,9 @@ if __name__ == "__main__":
     U_min=2*np.ones(N,dtype=np.int32)
     U_max=2*np.ones(N,dtype=np.int32)
     demand_base = -500*np.random.random(T)+1500
+    RES_base=-100*np.random.random(T)+150
 
-    M = 1  # Big M
+    M = 100  # Big M
     
     generate_train_instance(train_size)
     generate_test_instance(test_size)

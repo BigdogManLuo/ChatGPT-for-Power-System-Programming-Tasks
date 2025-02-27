@@ -5,11 +5,12 @@ from utilities import loadDataset,divingDataset,lossFunc
 from torch import optim
 import numpy as np
 import datetime
+import matplotlib
 from matplotlib import pyplot as plt
 
 
 #Define model
-model=divingModel(nfeat=1,nhid=64,nclass=1,dropout=0.5,nNodes=2844,nOut=240,nlhid=256)  
+model=divingModel(nfeat=1,nhid=64,nclass=1,dropout=0.5,nNodes=3308,nOut=240,nlhid=256)  
 lossfunc=nn.MSELoss()
 
 #Optimizer
@@ -26,10 +27,11 @@ device=(torch.device('cuda:0') if torch.cuda.is_available() else torch.device('c
 model=model.to(device=device)
 
 #%%training loop
-epoch_size=100
+epoch_size=20
 batch_size=20
 group_size=4
 #Load validation dataset
+
 adjs,features,sols,objs=loadDataset(idx=-2)
 valid_dataset=divingDataset(adjs,features,sols,objs)
 valid_loader = torch.utils.data.DataLoader(dataset=valid_dataset,
@@ -37,6 +39,8 @@ valid_loader = torch.utils.data.DataLoader(dataset=valid_dataset,
                                            drop_last = True ,      
                                            shuffle=True,
                                            )
+
+
 Loss_train=[]
 Loss_valid=[]
 #Training loop                                            
@@ -80,7 +84,7 @@ for epoch in range(epoch_size):
         
         print('{} Epoch {} Group {}, trainLoss {} '.format(datetime.datetime.now(),epoch,group,loss_train_mean))    
     
-
+    
     #Validation
     model.eval()
     with torch.no_grad():
@@ -105,23 +109,20 @@ for epoch in range(epoch_size):
     
     #Visualize
     Loss_train.append(loss_train_mean)
-    Loss_valid.append(loss_valid_mean)
+    #Loss_valid.append(loss_valid_mean)
 
 #Save model
 torch.save({'model': model.state_dict()}, 'model/diving_model.pth')
 
 
-#%% Visualize
-import matplotlib
-matplotlib.rcParams['font.family']='Arial'     
-matplotlib.rcParams['font.sans-serif'] = ['Arial']
-
-plt.plot(Loss_train,label="train",color="#4a69bd")
-plt.plot(Loss_valid,label="valid",color="#b71540")
-plt.legend()
-plt.xlabel("Epoch", fontsize=12)
-plt.ylabel("Loss", fontsize=12)
-plt.grid()
 
 
-plt.savefig("loss.png",dpi=666)
+
+
+
+
+
+
+
+
+
