@@ -15,19 +15,11 @@ see '01_normal_UC'
 **Case Study 2️⃣: Accelerating Unit Commitment**
 see '02_accelerating_UC'
 
-<<<<<<< HEAD
 This work corresponds to the paper [A framework for leveraging ChatGPT on programming tasks in energy systems
 ](https://arxiv.org/abs/2305.11202), where we elaborate on our methodology, implementation details, and experimental results.
 
 ## Reference
 
-=======
-
-This work corresponds to our paper [A framework for leveraging ChatGPT on programming tasks in energy systems
-](https://arxiv.org/abs/2305.11202), where we elaborate on our methodology, implementation details, and experimental results.
-
-## Reference
->>>>>>> 07c95232616711f546d7ba4e58efd49fe0d959f9
 ```bibtex
 @misc{li2023leveraging,
       title={A framework for leveraging ChatGPT on programming tasks in energy systems},
@@ -39,10 +31,6 @@ This work corresponds to our paper [A framework for leveraging ChatGPT on progra
 }
 ```
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 07c95232616711f546d7ba4e58efd49fe0d959f9
 ## Acknowledgements
 
 Thanks Prof. RanLi, Prof. Sijie Chen, Dr. Feilong Fan, Prof. Yue Xiang for their guidance in this work, thanks JunyiTao for his contribution in this comprehensive evaluation.
