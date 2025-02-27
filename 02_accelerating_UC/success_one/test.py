@@ -79,14 +79,10 @@ with torch.no_grad():
         outputs=np.random.binomial(1,outputs)
         outputs=outputs.reshape(24,10)
         outputs=outputs.T
-<<<<<<< HEAD
         
         # Fix U and optimized the modified model 
         status,obj,consum_time=OptimizeRemainedLP(ins_index,outputs)
         
-=======
-        status,obj,consum_time=OptimizeRemainedLP(ins_index,outputs)
->>>>>>> 07c95232616711f546d7ba4e58efd49fe0d959f9
         #Update ins_index
         ins_index=ins_index+1
         
