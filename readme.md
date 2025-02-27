@@ -21,13 +21,11 @@ This work corresponds to the paper [A framework for leveraging ChatGPT on progra
 ## Reference
 
 ```bibtex
-@misc{li2023leveraging,
-      title={A framework for leveraging ChatGPT on programming tasks in energy systems},
-      author={Ran Li and Chuanqing Pu and Feilong Fan and Junyi Tao and Yue Xiang},
-      year={2023},
-      eprint={2305.11202},
-      archivePrefix={arXiv},
-      primaryClass={cs.HC}
+@article{li2023llm,
+  title={LLM-based frameworks for power engineering from routine to novel tasks},
+  author={Li, Ran and Pu, Chuanqing and Tao, Junyi and Li, Canbing and Fan, Feilong and Xiang, Yue and Chen, Sijie},
+  journal={arXiv preprint arXiv:2305.11202},
+  year={2023}
 }
 ```
 
